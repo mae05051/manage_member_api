@@ -1,0 +1,25 @@
+{
+  "name": "manage_member_api",
+  "version": "1.0.0",
+  "description": "Node.js 회원관리 API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev":"nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mae05051/manage_member_api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mae05051/manage_member_api/issues"
+  },
+  "homepage": "https://github.com/mae05051/manage_member_api#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
