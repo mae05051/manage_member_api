@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>로그인</title>
+</head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <form class="container" id="login" method="post">
+            <div class="row">
+                ID <input type="text" name="id" id="id" placeholder="ID">
+            </div>
+            <div class="login_pw">
+                <h4><i class="material-icons prefix"></i>Password</h4>
+                <input type="password" name="pw" id="pw" placeholder="Password">
+            </div>         
+        </form>
+        <div class="container">
+            <div class="row">
+              <div class="col">
+                1 of 3
+              </div>
+              <div class="col-6">
+                2 of 3 (wider)
+              </div>
+              <div class="col">
+                3 of 3
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                1 of 3
+              </div>
+              <div class="col-5">
+                2 of 3 (wider)
+              </div>
+              <div class="col">
+                3 of 3
+              </div>
+            </div>
+          </div>
+        <div class="container">
+            <h2>로그인</h2>
+                <form id="login" method="post">
+                    <div class="row">
+                        <div class="login_id">
+                            <h4><i class="material-icons prefix"></i>ID</h4>
+                            <input type="text" name="id" id="id" placeholder="ID">
+                        </div>
+                    </div>
+                    <div class="login_pw">
+                        <h4><i class="material-icons prefix"></i>Password</h4>
+                        <input type="password" name="pw" id="pw" placeholder="Password">
+                    </div>         
+                </form>
+            </div>
+            <br>
+            <button onclick="login()">로그인</button>
+            <button onclick="window.location.href='/signup'">회원가입</button>
+        </div>
+    </body>
+</html>
+
+<script>
+    console.log(sessionStorage.length)
+    if (sessionStorage.length>0){
+        window.location.href='/mainpage'
+    }
+
+    const login=()=>{
+        let formData = $("#login").serialize();
+        console.log(formData)
+        $.ajax({
+            header:{
+					"Content-Type":"application/json"
+                },
+            url : "/api/login",
+            type : 'POST', 
+            data : formData, 
+            success : function(data) {
+                if(data['success']==true){
+                    sessionStorage.setItem('token', data['token'])
+                    sessionStorage.setItem('id', data['id'])
+                    window.location.href='/mainpage'
+                }else if (data['success']=='id_false'){
+                    alert('존재하지 않는 id입니다.')
+                }else{
+                    alert('비밀번호가 틀립니다.')
+                }
+            }, 
+            error : function(xhr, status) {
+                alert(xhr + " : " + status);
+            }
+        });
+    }
+</script>

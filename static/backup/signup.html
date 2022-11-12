@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <title>test</title>
+</head>
+    <body>
+    <div>
+        <div class="row idForm">
+            <i class="material-icons prefix">ID</i>
+            <input type="text" id="id" class="id" name="id"/>
+            <button type="button" class="btn1" onclick='checkid()'>ID 중복확인</button>
+            <br />
+        </div>
+        
+        <!-- <div class="row margin emailForm">
+            <i class="material-icons prefix">email</i>
+            <input id="email" name="email" type="text" style="cursor: auto;" class="email" placeholder="Email" />
+        </div> -->
+        
+        <div class="row margin passForm">
+            <i class="material-icons prefix">Password</i>
+            <input id="password" name="password" type="password" class="pw" placeholder="Password"/>
+        </div>
+        
+        <div class="row margin passForm">
+            <i class="material-icons prefix">Password 재입력</i>
+            <input id="password_a" name="cpassword" type="password"class="pw" placeholder="Password Again"/>
+        </div>
+        <p id="sp"></p>
+        <div class="row">
+            <button type="button" class="btn" onclick='checkPW();' id="sign" disabled>회원가입</button>
+            <p class="margin">이미 계정을 갖고 계신가요? <a href="./login">지금 로그인하기</a></p>
+        </div>
+    </div>
+    </body>
+</html>
+
+<script>
+    var flag
+    function checkid(){
+        var id = $('#id').val()
+        $.ajax({
+            url:"/api/checkid",
+            type:"POST",
+            data:{
+                id:id
+            },
+            success : function (data) {
+                if (data['same']==true){
+                    alert("이미 존재하는 id입니다.")
+                    flag =0
+                }else{
+                    alert("회원가입 가능한 id입니다.")
+                    flag =1
+                    if ($('#password').val() == $('#password_a').val() & flag == 1 & $('#password').val().length>0){
+                        $("#sign").attr("disabled", false);
+                    }else{
+                        $("#sign").attr("disabled", true);
+                    }
+                }
+            }
+
+        })
+
+            
+    }
+    $('#id').on('keyup', function () {
+        flag=0
+        $("#sign").attr("disabled", true);
+    })
+    
+    $('#password_a').on('keyup', function () {
+        if ($('#password').val() == $('#password_a').val()){
+            $("#sp").text("비밀번호 확인 완료")
+            if (flag==1){
+                $("#sign").attr("disabled", false);
+            } 
+        }else{
+            $("#sp").text("다른 비밀번호입니다.")
+            if (flag==1){
+                $("#sign").attr("disabled", true);
+            }
+        }
+    })
+
+    
+    function checkPW(){
+        var id = $('#id').val()
+        var pw = $('#password').val()
+
+        $.ajax({
+            url:"/api/signup",
+            type:"POST",
+            data:{
+                id:id,
+                pw:pw
+            },
+            success : function (data) {
+
+                if (data.status==true){
+                    alert("회원가입 정상")
+                    window.location.href='/login'
+                    //로그인페이지로 이동
+                }else{
+                    alert("이미 존재하는 id입니다.")
+                }
+            }
+        })   
+    }
+</script>
