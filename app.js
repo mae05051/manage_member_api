@@ -4,11 +4,12 @@ const cookieParser = require('cookie-parser')
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const db = require("./db");
+require('dotenv').config()
 
 const app = express()
 const port = 5000
 const path = __dirname + '/static';
-const SECRET_KEY = "rlawngks";
+const SECRET_KEY = process.env.secret_key;
 
 app.use(cookieParser())
 app.use(bodyParser.json()); 
@@ -17,7 +18,7 @@ app.use(express.urlencoded({extended: true}))
 app.use('/view', express.static(path))
 
 app.listen(port, () => {
-  console.log(`MBTI TEST http://localhost:${port}`)
+  console.log(`http://localhost:${port}`)
 })
 
 //TEST
